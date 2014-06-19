@@ -1,4 +1,4 @@
-# Ttcrypt
+# TTcrypt
 
 TODO: Write a gem description
 

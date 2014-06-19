@@ -20,3 +20,8 @@ tmp
 *.o
 *.a
 mkmf.log
+.settings
+.idea
+.cproject
+.project
+**/.DS_Store

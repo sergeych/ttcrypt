@@ -1,3 +1,5 @@
-module Ttcrypt
-  VERSION = "0.0.1"
+module TTcrypt
+
+  VERSION = '0.0.2'
+
 end
