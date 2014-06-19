@@ -1,4 +1,4 @@
-# TTcrypt thrift cryptoutuls package
+# TTCrypt thrift cryptoutuls package
 # Copyright (C) 2014 by Thrift.
 #
 # This program is free software: you can redistribute it and/or modify

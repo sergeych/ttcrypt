@@ -1,6 +1,6 @@
 # Thrift cryptographics primitives: fast c++ implementation, only strong schemes,
 # releases GVL on long operations so other threads can be executed in parallel.
-module TTcrypt
+module TTCrypt
   # Your code goes here...
 
   # Pollard 'rho' prime factorization. Allows execution of other ruby
@@ -135,7 +135,7 @@ end
 require 'ttcrypt/ttcrypt'
 
 # These definitions must happen after including natinve lib!
-module TTcrypt
+module TTCrypt
   module_function :factorize, :_factorize
 end
 

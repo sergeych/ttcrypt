@@ -6,13 +6,13 @@ require 'openssl'
 
 describe 'rsa-oaep' do
 
-  # include TTcrypt
+  # include TTCrypt
 
   it 'should do factorization' do
     # p test1("hello guys")
     p1      = 0x10001
     p2      = 101
-    factors = TTcrypt.factorize(p1*p2).sort
+    factors = TTCrypt.factorize(p1*p2).sort
     factors[0].should == p2
     factors[1].should == p1
   end
@@ -26,21 +26,21 @@ describe 'rsa-oaep' do
         sleep(0.001)
       end
     }
-    rsa    = TTcrypt::RsaKey.generate 1024
+    rsa    = TTCrypt::RsaKey.generate 1024
     stopme = true
     counter.should > 0
     rsa.bits.should == 1024
   end
 
   it 'should not encrypt without key' do
-    key = TTcrypt::RsaKey.new
-    -> { key.decrypt('bad idea') }.should raise_error(TTcrypt::RsaKey::Error)
+    key = TTCrypt::RsaKey.new
+    -> { key.decrypt('bad idea') }.should raise_error(TTCrypt::RsaKey::Error)
   end
 
 
   context 'having key' do
     before :all do
-      @key = TTcrypt::RsaKey.generate 1024
+      @key = TTCrypt::RsaKey.generate 1024
     end
 
     it 'should round trip generated keys' do
@@ -50,7 +50,7 @@ describe 'rsa-oaep' do
       decrypted.encoding.should == Encoding::BINARY
 
       -> { @key.encrypt 'way too long message to encrypt it!!!!!!!'*12 }
-      .should raise_error(TTcrypt::RsaKey::Error)
+      .should raise_error(TTCrypt::RsaKey::Error)
 
     end
 
@@ -94,7 +94,7 @@ describe 'rsa-oaep' do
 
   it 'should construct from components' do
     init_test_vectors1
-    key = TTcrypt::RsaKey.new e: @e, p: @p, q: @q
+    key = TTCrypt::RsaKey.new e: @e, p: @p, q: @q
     key.p.should == @p
     key.q.should == @q
     key.e.should == @e

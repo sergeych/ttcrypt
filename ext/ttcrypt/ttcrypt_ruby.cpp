@@ -1,5 +1,5 @@
 /*
- * TTcrypt ruby bindings
+ * TTCrypt ruby bindings
  *
  * Copyright (C) 2014 Thrift, Sergey S. Chernov
 
@@ -210,7 +210,7 @@ static VALUE rsa_alloc(VALUE klass) {
 
 void Init_ttcrypt(void) {
 
-	VALUE ttcrypt_module = rb_define_module("TTcrypt");
+	VALUE ttcrypt_module = rb_define_module("TTCrypt");
 
 	rb_define_method(ttcrypt_module, "_factorize", (ruby_method) factorize, 1);
 

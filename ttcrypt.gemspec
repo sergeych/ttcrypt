@@ -7,8 +7,8 @@ require "rake/extensiontask"
 require 'rubygems/package_task'
 
 spec = Gem::Specification.new do |spec|
-  spec.name          = "TTcrypt"
-  spec.version       = TTcrypt::VERSION
+  spec.name          = "TTCrypt"
+  spec.version       = TTCrypt::VERSION
   spec.authors       = ["sergeych"]
   spec.email         = ["real.sergeych@gmail.com"]
   spec.summary       = %q{thrift basic cryptography}
@@ -23,14 +23,14 @@ spec = Gem::Specification.new do |spec|
 
   spec.extensions = FileList["ext/**/extconf.rb"]
 
+  spec.platform = Gem::Platform::RUBY
+
   spec.add_development_dependency "bundler", "~> 1.6"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rake-compiler"
   spec.add_development_dependency "rspec", '>= 2.14.0'
 
   spec.requirements << 'GMP, https://gmplib.org'
-  # spec.add_dependency 'gmp'
-
 end
 
 

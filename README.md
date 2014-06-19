@@ -1,10 +1,24 @@
-# TTcrypt
+# TTCrypt
 
-TODO: Write a gem description
+Attention: this version is yet not fully functional.
+
+TTCrypt is a fast basic cryptography library written in C++ that implements only string encoded RSA 
+variants and othe cryptoprimitives widely used in Thrift projects, namely:
+
+* RSAES-OAEP encryption
+* RSASS-PSS signing
+* Pollard 'rho' factorization
+* SHA1 and SHA256 hashes (under development)
+* RJ256/256 (under development)
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Current implementation targeted fro MRI ruby 2.0+.
+
+To install your computer should have GMP library installed. Use your target system's packet manager
+(apt, brew, whatever you have) or get it there: https://gmplib.org
+
+Then, add this line to your application's Gemfile:
 
     gem 'ttcrypt'
 
@@ -17,6 +31,8 @@ Or install it yourself as:
     $ gem install ttcrypt
 
 ## Usage
+
+So far you can use rdoc.
 
 TODO: Write usage instructions here
 
