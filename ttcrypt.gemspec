@@ -7,19 +7,19 @@ require "rake/extensiontask"
 require 'rubygems/package_task'
 
 spec = Gem::Specification.new do |spec|
-  spec.name          = "TTCrypt"
+  spec.name          = "ttcrypt"
   spec.version       = TTCrypt::VERSION
   spec.authors       = ["sergeych"]
   spec.email         = ["real.sergeych@gmail.com"]
   spec.summary       = %q{thrift basic cryptography}
-  spec.description   = %q{optimized basic cryptography primitives in c++}
+  spec.description   = %q{optimized RSA and other basic cryptography primitives in c++}
   spec.homepage      = ""
   spec.license       = "GPL3+"
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
-  spec.require_paths = ["lib"]
+  spec.require_paths = ['lib','ext']
 
   spec.extensions = FileList["ext/**/extconf.rb"]
 

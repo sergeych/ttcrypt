@@ -8,7 +8,9 @@ module TTCrypt
   #
   # @return [int] array of prime factors
   def factorize composite
-    _factorize(composite.to_i.to_s(16)).map { |x| x.to_i(16) }
+    hex = composite.to_i.to_s(16)
+    hex = '0' + hex if (hex.length & 1) == 1
+    _factorize(hex).map { |x| x.to_i(16) }
   end
 
   # Implementation of RSAES-OAEP encryption and RSASSA-PSS signing
@@ -134,7 +136,6 @@ end
 # otherwise won't work!
 require 'ttcrypt/ttcrypt'
 
-# These definitions must happen after including natinve lib!
 module TTCrypt
   module_function :factorize, :_factorize
 end

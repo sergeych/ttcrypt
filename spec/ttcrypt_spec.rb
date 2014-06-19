@@ -15,6 +15,10 @@ describe 'rsa-oaep' do
     factors = TTCrypt.factorize(p1*p2).sort
     factors[0].should == p2
     factors[1].should == p1
+
+    val = 177130
+    factors = TTCrypt.factorize(val)
+    factors.reduce(1){|all, x| x*all}.should == val
   end
 
   it 'should generate keys in background' do
