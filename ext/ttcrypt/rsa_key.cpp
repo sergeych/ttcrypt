@@ -96,9 +96,9 @@ byte_buffer eme_oaep_decode(const byte_buffer& message, const byte_buffer& p) {
 }
 
 byte_buffer rsa_key::rsadp(const byte_buffer& ciphertext) const {
-	big_integer c = big_integer(ciphertext);
+	big_integer c = ciphertext;
 	if (c >= n - 1)
-		throw rsa_key::error("cipertext is too long");
+		throw rsa_key::error("ciphertext is too long");
 	if (fast_key) {
 		// Fast
 		auto m1 = powmod_sec((c % p), dp, p);
