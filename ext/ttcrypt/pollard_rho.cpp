@@ -27,25 +27,6 @@ using namespace thrift;
 using namespace std;
 
 inline big_integer rho(const big_integer& n) {
-    /*
-     BigInteger divisor;
-     BigInteger c = new BigInteger(N.bitLength(), random);
-     BigInteger x = new BigInteger(N.bitLength(), random);
-     BigInteger xx = x;
-     
-     // check divisibility by 2
-     if (N.mod(two).compareTo(BigInteger.ZERO) == 0) return two;
-     
-     do {
-     x = x.multiply(x).mod(N).add(c).mod(N);
-     xx = xx.multiply(xx).mod(N).add(c).mod(N);
-     xx = xx.multiply(xx).mod(N).add(c).mod(N);
-     divisor = x.subtract(xx).gcd(N);
-     } while ((divisor.compareTo(BigInteger.ONE)) == 0);
-     
-     return divisor;
-     }
-     */
     big_integer divisor;
     auto c = big_integer::random_bits(n.bit_length());
     auto x = big_integer::random_bits(n.bit_length());
