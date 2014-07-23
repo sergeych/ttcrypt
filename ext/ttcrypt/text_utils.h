@@ -25,6 +25,7 @@
 #define __zcoin__text_utils__
 
 #include <iostream>
+#include <memory>
 
 std::string sformat(const std::string fmt_str, ...);
 std::string vsformat(const std::string fmt_str, va_list args);

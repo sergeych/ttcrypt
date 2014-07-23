@@ -45,7 +45,7 @@ byte_buffer ttcrypt::i2osp(const big_integer& i, size_t block_size) noexcept {
     if( block_size > 0 && res.size() != block_size ) {
         size_t pad_length = block_size - res.size() % block_size;
         if( pad_length > 0 )
-            return byte_buffer('\0', pad_length) + res;
+            return byte_buffer::pad('\0', pad_length) + res;
     }
     return res;
 }

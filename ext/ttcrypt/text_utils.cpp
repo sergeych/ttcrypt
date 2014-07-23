@@ -22,6 +22,10 @@
 
 #include "text_utils.h"
 
+template<typename X>
+X ABS(X val) {
+	return val < 0 ? -val : val;
+}
 
 std::string sformat(const std::string fmt_str, ...) {
     int final_n, n = ((int)fmt_str.size()) * 2; /* reserve 2 times as much as the length of the fmt_str */
@@ -35,7 +39,7 @@ std::string sformat(const std::string fmt_str, ...) {
         final_n = vsnprintf(&formatted[0], n, fmt_str.c_str(), ap);
         va_end(ap);
         if (final_n < 0 || final_n >= n)
-            n += abs(final_n - n + 1);
+            n += ABS(final_n - n + 1);
         else
             break;
     }
@@ -54,7 +58,7 @@ std::string vsformat(const std::string fmt_str, va_list args) {
         final_n = vsnprintf(&formatted[0], n-1, fmt_str.c_str(), c);
         va_end(c);
         if (final_n < 0 || final_n >= n)
-            n += abs(final_n - n + 1);
+            n += ABS(final_n - n + 1);
         else
             break;
     }
