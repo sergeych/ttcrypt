@@ -26,6 +26,7 @@
 
 #include <iostream>
 #include <string.h>
+#include <memory>
 #include "text_utils.h"
 
 using namespace std;
