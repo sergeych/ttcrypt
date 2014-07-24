@@ -96,7 +96,7 @@ describe 'rsa-oaep' do
     end
   end
 
-  it 'should construct from components' do
+  it 'should construct from components and decrypt' do
     init_test_vectors1
     key = TTCrypt::RsaKey.new e: @e, p: @p, q: @q
     key.p.should == @p
@@ -107,6 +107,20 @@ describe 'rsa-oaep' do
     key.decrypt(@encrypted_m).should == @message
     key.decrypt(key.extract_public.encrypt(@message)).should == @message
   end
+
+  it 'should properly encrypt' do
+    init_test_vectors1
+    key = TTCrypt::RsaKey.new e: @e, p: @p, q: @q
+    key.p.should == @p
+    key.q.should == @q
+    key.e.should == @e
+    key.should be_private
+    key.n.should_not be_nil
+    key.decrypt(key.encrypt(@message)).should == @message
+    key.decrypt(key.extract_public.encrypt(@message)).should == @message
+  end
+
+  it 'should properly sign'
 
   def init_test_vectors1
     @n = h2s <<-End
