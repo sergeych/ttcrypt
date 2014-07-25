@@ -8,8 +8,12 @@ variants and othe cryptoprimitives widely used in Thrift projects, namely:
 * RSAES-OAEP encryption
 * RSASS-PSS signing
 * Pollard 'rho' factorization
+* Fast orime generation
 * SHA1 and SHA256 hashes (under development)
 * RJ256/256 (under development)
+
+All long operation are being preformed releasing GVL so other ruby threads can execute while ttcrypt
+thinks.
 
 ## Installation
 

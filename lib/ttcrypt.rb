@@ -13,6 +13,13 @@ module TTCrypt
     _factorize(hex).map { |x| x.to_i(16) }
   end
 
+  # Generate random probable prime number with a given bits length. This implementation will generate
+  # prime such as 2^(bits-1) < prime < 2 ^ bits.
+  #
+  def generate_prime bits
+    _generate_prime(bits).to_i(16)
+  end
+
   # Implementation of RSAES-OAEP encryption and RSASSA-PSS signing
   # accroding to pkcs#1 v2.2 specification. Does NOT implement any previous cryptographically
   # weak shcemes (like 1.5 signature) - go use openssl for itm but it does compromise private
@@ -137,6 +144,6 @@ end
 require 'ttcrypt/ttcrypt'
 
 module TTCrypt
-  module_function :factorize, :_factorize
+  module_function :factorize, :_factorize, :generate_prime, :_generate_prime
 end
 
