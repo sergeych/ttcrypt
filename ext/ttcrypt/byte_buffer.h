@@ -26,6 +26,7 @@
 
 #include <iostream>
 #include <string.h>
+#include <memory>
 #include "text_utils.h"
 
 using namespace std;
@@ -110,13 +111,11 @@ namespace thrift {
             }
         }
         
-        
-        /** 
-         Fill constructor. Create buffer with specified size and fill value
-         */
-        byte_buffer(byte fill, size_t size)
-        : buffer(new byte[size]), length(size), _capacity(size) {
-            memset( buffer.get(), fill, size);
+        template<typename T>
+        static byte_buffer pad(T fill, size_t size) {
+        	byte_buffer result(size);
+            memset( result.data().get(), (int)fill, size);
+            return result;
         }
         
         shared_ptr<byte> data() const noexcept {

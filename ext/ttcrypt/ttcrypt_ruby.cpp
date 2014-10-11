@@ -118,6 +118,25 @@ static VALUE factorize(VALUE self, VALUE composite) {
 	});
 }
 
+static VALUE _generate_prime(VALUE self, VALUE bits) {
+	return wrap_exceptions([=] {
+	    unsigned nbits = FIX2INT(bits);
+	    big_integer prime;
+		ruby_unblock([nbits, &prime] {
+					auto min = pow(2_b, nbits-1);
+					auto max = 2*min - 1;
+					big_integer random;
+					do {
+					    random = big_integer::random_between(min, max);
+					    prime = next_prime(random);
+					} while( prime > max );
+					if( prime.bit_length() != nbits )
+					    throw std::logic_error("random generation logic failed");
+				});
+		return to_hex_value(prime);
+	});
+}
+
 typedef byte_buffer (*hash_t)(const byte_buffer &);
 
 static hash_t hash_provider(VALUE name) {
@@ -213,6 +232,7 @@ void Init_ttcrypt(void) {
 	VALUE ttcrypt_module = rb_define_module("TTCrypt");
 
 	rb_define_method(ttcrypt_module, "_factorize", (ruby_method) factorize, 1);
+	rb_define_method(ttcrypt_module, "_generate_prime", (ruby_method) _generate_prime, 1);
 
 	rsa_class = rb_define_class_under(ttcrypt_module, "RsaKey", rb_cObject);
 	rb_define_alloc_func(rsa_class, rsa_alloc);

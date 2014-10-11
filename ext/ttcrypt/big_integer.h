@@ -193,6 +193,9 @@ namespace thrift {
          Convert to BIE ENDIAN bytes array.
          */
         byte_buffer to_byte_buffer() const noexcept {
+        	// Workaround for some Andoid targets
+        	if( *this == 0 )
+        		return byte_buffer::pad(0, 1);
             size_t count = (mpz_sizeinbase (val, 2) + 7) / 8;
             byte_buffer res = byte_buffer(count);
             size_t count2 = count;

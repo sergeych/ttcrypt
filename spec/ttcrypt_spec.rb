@@ -16,9 +16,21 @@ describe 'rsa-oaep' do
     factors[0].should == p2
     factors[1].should == p1
 
-    val = 177130
+    val     = 177130
     factors = TTCrypt.factorize(val)
-    factors.reduce(1){|all, x| x*all}.should == val
+    factors.reduce(1) { |all, x| x*all }.should == val
+  end
+
+  it 'should generate primes' do
+    bits = 35
+    primes = 2.times.map {
+      x = TTCrypt.generate_prime bits
+      x.should > (1<<(bits-1))
+      x.should < (1<<(bits))
+      x
+    }
+    primes.sort!
+    TTCrypt.factorize(primes[0] * primes[1]).sort.should == primes
   end
 
   it 'should generate keys in background' do
@@ -96,7 +108,7 @@ describe 'rsa-oaep' do
     end
   end
 
-  it 'should construct from components' do
+  it 'should construct from components and decrypt' do
     init_test_vectors1
     key = TTCrypt::RsaKey.new e: @e, p: @p, q: @q
     key.p.should == @p
@@ -107,6 +119,20 @@ describe 'rsa-oaep' do
     key.decrypt(@encrypted_m).should == @message
     key.decrypt(key.extract_public.encrypt(@message)).should == @message
   end
+
+  it 'should properly encrypt' do
+    init_test_vectors1
+    key = TTCrypt::RsaKey.new e: @e, p: @p, q: @q
+    key.p.should == @p
+    key.q.should == @q
+    key.e.should == @e
+    key.should be_private
+    key.n.should_not be_nil
+    key.decrypt(key.encrypt(@message)).should == @message
+    key.decrypt(key.extract_public.encrypt(@message)).should == @message
+  end
+
+  it 'should properly sign'
 
   def init_test_vectors1
     @n = h2s <<-End
@@ -146,7 +172,7 @@ describe 'rsa-oaep' do
 
   def h2s hex
     hex = hex.gsub(/\s+/, '')
-    hex.chars.each_slice(2).map{|x,y| (x.to_i(16)<<4 | y.to_i(16)).chr}.join
+    hex.chars.each_slice(2).map { |x, y| (x.to_i(16)<<4 | y.to_i(16)).chr }.join
   end
 
 

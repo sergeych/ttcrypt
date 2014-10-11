@@ -33,8 +33,8 @@ namespace ttcrypt {
     
     using namespace thrift;
     
-    byte_buffer eme_oaep_encode( const byte_buffer& message,size_t emLen, const byte_buffer& p=byte_buffer(), const byte_buffer *seed=nullptr);
-    byte_buffer eme_oaep_decode(const byte_buffer& message,const byte_buffer& p="");
+    byte_buffer eme_oaep_encode( const byte_buffer& message,size_t emLen, const byte_buffer* p=0, const byte_buffer *seed=nullptr);
+    byte_buffer eme_oaep_decode(const byte_buffer& message,const byte_buffer* p=0);
     
     byte_buffer emsa_pss_encode(const byte_buffer& message,size_t emBits,byte_buffer (*hash)(const byte_buffer&),const byte_buffer* salt);
     bool emsa_pss_verify(const byte_buffer& source_message,
@@ -80,7 +80,7 @@ namespace ttcrypt {
          Set the named parameter to a given value. Supported values are: n, e, d, p, q, dp, dq, qinv.
          Not case sesitive. Call normalize_key() when done changing parameters.
          */
-        void set(string name, const big_integer& value);
+        void set(const string& name, const big_integer& value);
         
         /**
          Construct private key from parts. If not all parts are provided, recalculates missing ones that
@@ -123,7 +123,7 @@ namespace ttcrypt {
          RSAES-OAEP encrypt a message.
          */
         byte_buffer encrypt(const byte_buffer& plaintext) const {
-            return rsaep(eme_oaep_encode(plaintext, byte_size - 1,"", pseed));
+            return rsaep(eme_oaep_encode(plaintext, byte_size - 1, 0, pseed));
         }
         
         /**
@@ -132,7 +132,9 @@ namespace ttcrypt {
         byte_buffer decrypt(const byte_buffer& ciphertext) const {
             return eme_oaep_decode( rsadp( ciphertext) );
         }
-        
+
+        bool self_test(ostream& os);
+
         /**
          Create RSASSA-PSS signature for a given message. Requires private key.
          @param message what to sign
@@ -216,6 +218,8 @@ namespace ttcrypt {
             _use_blinding = use;
         }
         
+        byte_buffer get_e() const { return e.to_byte_buffer(); }
+
     private:
         big_integer n, e, p, q, d, dp, dq, q_inv;
         unsigned byte_size=0, bits_size=0;

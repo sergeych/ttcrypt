@@ -26,6 +26,7 @@
 
 #include <iostream>
 #include <functional> // std::function
+#include <memory>
 
 std::string sformat(const std::string fmt_str, ...);
 std::string vsformat(const std::string fmt_str, va_list args);
