@@ -3,7 +3,7 @@ lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'ttcrypt/version'
 require 'rake'
-require "rake/extensiontask"
+require 'rake/extensiontask'
 require 'rubygems/package_task'
 
 spec = Gem::Specification.new do |spec|
