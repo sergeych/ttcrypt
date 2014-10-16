@@ -47,7 +47,11 @@ else
   $CFLAGS += ' -Wall -W -O3 -g'
 end
 
-$CXXFLAGS += " -std=c++11"
+if $CXXFLAGS
+  $CXXFLAGS += " -std=c++11"
+else
+  CONFIG['CXXFLAGS'] += " -std=c++11"
+end
 
 if ok
   create_makefile(extension_name)
