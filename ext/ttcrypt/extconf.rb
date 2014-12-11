@@ -47,11 +47,10 @@ else
   $CFLAGS += ' -Wall -W -O3 -g'
 end
 
-if $CXXFLAGS
-  $CXXFLAGS += " -std=c++11"
-else
-  CONFIG['CXXFLAGS'] += " -std=c++11"
-end
+cxx11flag = " --std=c++11"
+
+$CXXFLAGS = CONFIG["CXXFLAGS"] unless defined?($CXXFLAGS)
+$CXXFLAGS += cxx11flag unless $CXXFLAGS.include?(cxx11flag)
 
 if ok
   create_makefile(extension_name)
