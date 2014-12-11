@@ -13,7 +13,7 @@ spec = Gem::Specification.new do |spec|
   spec.email         = ["real.sergeych@gmail.com"]
   spec.summary       = %q{thrift basic cryptography}
   spec.description   = %q{optimized RSA and other basic cryptography primitives in c++}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/sergeych/ttcrypt"
   spec.license       = "GPL3+"
 
   spec.files         = `git ls-files -z`.split("\x0")
@@ -26,9 +26,9 @@ spec = Gem::Specification.new do |spec|
   spec.platform = Gem::Platform::RUBY
 
   spec.add_development_dependency "bundler", "~> 1.6"
-  spec.add_development_dependency "rake"
-  spec.add_development_dependency "rake-compiler"
-  spec.add_development_dependency "rspec", '>= 2.14.0'
+  spec.add_development_dependency "rake", "~> 0"
+  spec.add_development_dependency "rake-compiler", "~> 0"
+  spec.add_development_dependency 'rspec', '~> 2.14', '>= 2.14.0'
 
   spec.requirements << 'GMP, https://gmplib.org'
 end
