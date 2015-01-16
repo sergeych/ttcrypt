@@ -76,12 +76,12 @@ describe 'rsa-oaep' do
         signature = @key.sign(message, hash_name)
         signature.length.should == 128
         signature.encoding.should == Encoding::BINARY
-        @key.verify(message, signature, hash_name).should be_true
-        @key.verify(message+'...', signature, hash_name).should be_false
+        @key.verify(message, signature, hash_name).should be_truthy
+        @key.verify(message+'...', signature, hash_name).should be_falsey
         bad_signature = signature.clone
         bad_signature.setbyte(0, bad_signature.getbyte(0) ^ 11)
-        @key.verify(message, bad_signature, hash_name).should be_false
-        @key.verify(message, signature, hash_name).should be_true
+        @key.verify(message, bad_signature, hash_name).should be_falsey
+        @key.verify(message, signature, hash_name).should be_truthy
       }
       -> { @key.sign(message, :wrong_hash) }.should raise_error
       -> { @key.verify(message, 'no matter', :wrong_hash) }.should raise_error
