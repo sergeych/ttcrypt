@@ -25,7 +25,6 @@
 #define __zcoin__text_utils__
 
 #include <iostream>
-#include <functional> // std::function
 #include <memory>
 #include <functional>
 
