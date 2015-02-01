@@ -1,10 +1,10 @@
 # coding: utf-8
+
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+
 require 'ttcrypt/version'
 require 'rake'
-require 'rake/extensiontask'
-require 'rubygems/package_task'
 
 spec = Gem::Specification.new do |spec|
   spec.name          = "ttcrypt"
@@ -26,22 +26,22 @@ spec = Gem::Specification.new do |spec|
   spec.platform = Gem::Platform::RUBY
 
   spec.add_development_dependency "bundler", "~> 1.6"
-  spec.add_development_dependency "rake", "~> 10.4"
-  spec.add_development_dependency "rake-compiler", "~> 0"
   spec.add_development_dependency 'rspec', '~> 2.14', '>= 2.14.0'
+
+  spec.add_dependency 'rake'
+  spec.add_dependency 'rake-compiler'
 
   spec.requirements << 'GMP, https://gmplib.org'
 end
 
-
 # add your default gem packing task
-Gem::PackageTask.new(spec) do |pkg|
-end
+# Gem::PackageTask.new(spec) do |pkg|
+# end
 
-Rake::ExtensionTask.new "ttcrypt", spec do |ext|
-  ext.lib_dir = "lib/ttcrypt"
-  ext.source_pattern = "*.{c,cpp}"
-  ext.gem_spec = spec
-end
+# Rake::ExtensionTask.new "ttcrypt", spec do |ext|
+#   ext.lib_dir = "lib/ttcrypt"
+#   ext.source_pattern = "*.{c,cpp}"
+#   ext.gem_spec = spec
+# end
 
 spec

@@ -25,3 +25,5 @@ mkmf.log
 .cproject
 .project
 **/.DS_Store
+*.swp
+*.swo
