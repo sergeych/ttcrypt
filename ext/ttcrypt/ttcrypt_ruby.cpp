@@ -118,6 +118,26 @@ static VALUE factorize(VALUE self, VALUE composite) {
 	});
 }
 
+static VALUE factorize2(VALUE self, VALUE composite) {
+	return wrap_exceptions([=] {
+		string s = value_to_string(composite);
+		byte_buffer buffer(RSTRING_PTR(composite), RSTRING_LEN(composite));
+
+		vector<big_integer> factors;
+		ruby_unblock([&buffer,&factors] {
+					factors = pollard_rho::factorize(big_integer(buffer));
+				});
+
+
+		VALUE result = rb_ary_new();
+		for (auto factor : factors) {
+		    byte_buffer b = factor.to_byte_buffer();
+			rb_ary_push(result, rb_str_new( (const char*)b.data().get(), (size_t)b.size()) );
+		}
+		return result;
+	});
+}
+
 static VALUE _generate_prime(VALUE self, VALUE bits) {
 	return wrap_exceptions([=] {
 	    unsigned nbits = FIX2INT(bits);
@@ -232,6 +252,7 @@ void Init_ttcrypt(void) {
 	VALUE ttcrypt_module = rb_define_module("TTCrypt");
 
 	rb_define_method(ttcrypt_module, "_factorize", (ruby_method) factorize, 1);
+	rb_define_method(ttcrypt_module, "_factorize2", (ruby_method) factorize2, 1);
 	rb_define_method(ttcrypt_module, "_generate_prime", (ruby_method) _generate_prime, 1);
 
 	rsa_class = rb_define_class_under(ttcrypt_module, "RsaKey", rb_cObject);

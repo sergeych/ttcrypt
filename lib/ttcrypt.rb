@@ -1,16 +1,54 @@
 # Thrift cryptographics primitives: fast c++ implementation, only strong schemes,
 # releases GVL on long operations so other threads can be executed in parallel.
+
+
+class Numeric
+
+  # Convert an integer non-negative number that to bytes array using specified endianness. if it is
+  # float, it will be converted to an integer first.
+  #
+  # @return [Symbol] either :BE or :LE
+  def to_bytes order: :BE
+    order == :BE || order == :LE or raise ArgimentError, "unkown order, should be either :BE or :LE"
+    (value  = self.to_i) < 0 and raise ArgumentError, 'value must not be negative'
+    result = ''
+    result.force_encoding 'binary'
+    while value != 0
+      byte  = value & 0xFF
+      value >>= 8
+      result << byte.chr
+    end
+    result == '' ? "\x0" : (order == :BE ? result.reverse : result)
+  end
+
+end
+
+class String
+
+  # Convert string that is supposed to be binary data to integer value
+  # using specified bytes order
+  # @return [Symbol] either :BE or :LE
+  def bytes_to_integer order: :BE
+    order == :BE || order == :LE or raise ArgimentError, "unkown order, should be either :BE or :LE"
+    result = 0
+    (order == :BE ? self.bytes : self.bytes.reverse).each { |b|
+      result = (result << 8) | b.ord
+    }
+    result
+  end
+end
+
 module TTCrypt
-  # Your code goes here...
 
   # Pollard 'rho' prime factorization. Allows execution of other ruby
   # threads in parallel (releases GVL)
   #
   # @return [int] array of prime factors
   def factorize composite
-    hex = composite.to_i.to_s(16)
-    hex = '0' + hex if (hex.length & 1) == 1
-    _factorize(hex).map { |x| x.to_i(16) }
+    _factorize2(composite.to_bytes).map { |f| f.bytes_to_integer }
+    # hex = composite.to_i.to_s(16)
+    # hex = '0' + hex if (hex.length & 1) == 1
+    # _factorize(hex).map { |x| x.to_i(16) }
   end
 
   # Generate random probable prime number with a given bits length. This implementation will generate
@@ -144,6 +182,6 @@ end
 require 'ttcrypt/ttcrypt'
 
 module TTCrypt
-  module_function :factorize, :_factorize, :generate_prime, :_generate_prime
+  module_function :factorize, :_factorize, :_factorize2, :generate_prime, :_generate_prime
 end
 
