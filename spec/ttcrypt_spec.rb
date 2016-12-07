@@ -71,7 +71,7 @@ describe 'rsa-oaep' do
 
     it 'should round trip signatures' do
       message = 'che bella cosa'
-      %i|sha1 sha256|.each { |hash_name|
+      %i|sha1 sha256 sha512|.each { |hash_name|
         signature = @key.sign(message, hash_name)
         signature.length.should == 128
         signature.encoding.should == Encoding::BINARY
@@ -129,6 +129,12 @@ describe 'rsa-oaep' do
     key.n.should_not be_nil
     key.decrypt(key.encrypt(@message)).should == @message
     key.decrypt(key.extract_public.encrypt(@message)).should == @message
+  end
+  
+  it 'should provide fast sha256' do
+    source = "Hello everybody! We're so glad to have you all right hère!"
+    TTCrypt.sha256(source).should == Digest::SHA256.new.digest(source)
+    TTCrypt.sha512(source).should == Digest::SHA512.new.digest(source)
   end
 
   it 'should properly sign'

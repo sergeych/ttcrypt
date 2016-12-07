@@ -1,23 +1,24 @@
 # TTCrypt
 
-Attention: this version is yet not fully functional.
-
 TTCrypt is a fast basic cryptography library written in C++ that implements only string encoded RSA 
-variants and othe cryptoprimitives widely used in Thrift projects, namely:
+variants and othe cryptoprimitives widely used in Thrift/iCodici projects, namely:
 
 * RSAES-OAEP encryption
-* RSASS-PSS signing
+* RSASS-PSS signing (sha1, sha256 and sha512 are supported)
 * Pollard 'rho' factorization
 * Fast orime generation
-* SHA1 and SHA256 hashes (under development)
-* RJ256/256 (under development)
+* SHA1, SHA256 and SHA512 hashes
 
 All long operation are being preformed releasing GVL so other ruby threads can execute while ttcrypt
 thinks.
 
+## Changes
+
+After years in production we are added SHA512 signing hash and ability to caclulate hashes for strings - it's faster than using Digest module - at least on reasonable sized sources we use.
+
 ## Installation
 
-Current implementation targeted fro MRI ruby 2.0+.
+Current implementation targeted for MRI ruby 2.0+.
 
 To install your computer should have GMP library installed. Use your target system's packet manager
 (apt, brew, whatever you have) or get it there: https://gmplib.org
@@ -36,9 +37,21 @@ Or install it yourself as:
 
 ## Usage
 
-So far you can use rdoc.
+Very simple, for example:
 
-TODO: Write usage instructions here
+```ruby
+    private_key = TTCrypt::RsaKey.generate 2048
+    public_key = private_key.extract_public
+    
+    ciphered = public_key.encrypt 'some message'
+    decrypted = private_key.decrypt ciphered
+    
+    signature = private_key.sign 'some message to sign', :sha256
+    is_ok = public_key.verify 'some message to sign', signature, :sha256
+```
+    
+
+See [online docs](http://www.rubydoc.info/gems/ttcrypt) for more information.
 
 ## Contributing
 

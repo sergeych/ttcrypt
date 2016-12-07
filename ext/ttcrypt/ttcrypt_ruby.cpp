@@ -101,6 +101,20 @@ static VALUE rsa_decrypt(VALUE self, VALUE rb_data) {
 	});
 }
 
+static VALUE ttcrypt_sha256(VALUE self,VALUE rb_data) {
+    return wrap_exceptions([=] {
+        byte_buffer src = value_to_byte_buffer(rb_data);
+        return to_rb_string(sha256(src));
+    });
+}
+
+static VALUE ttcrypt_sha512(VALUE self,VALUE rb_data) {
+    return wrap_exceptions([=] {
+        byte_buffer src = value_to_byte_buffer(rb_data);
+        return to_rb_string(sha512(src));
+    });
+}
+
 static VALUE factorize(VALUE self, VALUE composite) {
 	return wrap_exceptions([=] {
 		string s = value_to_string(composite);
@@ -163,6 +177,8 @@ static hash_t hash_provider(VALUE name) {
 	string n = value_to_string(name);
 	if (n == "sha256")
 		return sha256;
+	else if (n == "sha512")
+		return sha512;
 	else if (n == "sha1")
 		return sha1;
 	else
@@ -254,6 +270,8 @@ void Init_ttcrypt(void) {
 	rb_define_method(ttcrypt_module, "_factorize", (ruby_method) factorize, 1);
 	rb_define_method(ttcrypt_module, "_factorize2", (ruby_method) factorize2, 1);
 	rb_define_method(ttcrypt_module, "_generate_prime", (ruby_method) _generate_prime, 1);
+	rb_define_method(ttcrypt_module, "sha256", (ruby_method) ttcrypt_sha256, 1);
+	rb_define_method(ttcrypt_module, "sha512", (ruby_method) ttcrypt_sha512, 1);
 
 	rsa_class = rb_define_class_under(ttcrypt_module, "RsaKey", rb_cObject);
 	rb_define_alloc_func(rsa_class, rsa_alloc);
@@ -268,6 +286,7 @@ void Init_ttcrypt(void) {
 	rb_define_method(rsa_class, "_is_private", (ruby_method) rsa_is_private, 0);
 	rb_define_method(rsa_class, "_components", (ruby_method) rsa_components, 0);
 	rb_define_method(rsa_class, "_set_params", (ruby_method) rsa_set_params, 1);
+
 
 	rsa_exception = rb_define_class_under(rsa_class, "Error",
 			rb_eStandardError);

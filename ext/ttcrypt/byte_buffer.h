@@ -209,7 +209,7 @@ namespace thrift {
         int index_of(byte value,int start_from=0) {
             int i = start_from;
             prepare_index(i);
-            while( i < length ) {
+            while( i < (int)length ) {
                 if( buffer.get()[i] == value )
                     return i;
                 i++;
@@ -311,7 +311,7 @@ namespace thrift {
         
         int prepare_index(int& index) const noexcept {
             if( index < 0 ) index = (int)length + index;
-            if( index < 0 || index > length ) throw length_error("wrong index");
+            if( index < 0 || index > (int)length ) throw length_error("wrong index");
             return index;
         }
     };

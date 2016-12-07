@@ -58,6 +58,22 @@ module TTCrypt
     _generate_prime(bits).to_i(16)
   end
 
+  # Generate fast SHA512 hash of a source string and return it in the binary form
+  #
+  # @param [String] source binary string
+  # @return [String] binary string with calculated hash code
+  def sha512(source)
+    # stub for documentation, real finction is in the native code
+  end
+
+  # Generate fast SHA256 hash of a source string and return it in the binary form
+  #
+  # @param [String] source binary string
+  # @return [String] binary string with calculated hash code
+  def sha256(source)
+    # stub for documentation, real finction is in the native code
+  end
+
   # Implementation of RSAES-OAEP encryption and RSASSA-PSS signing
   # accroding to pkcs#1 v2.2 specification. Does NOT implement any previous cryptographically
   # weak shcemes (like 1.5 signature) - go use openssl for itm but it does compromise private
@@ -126,7 +142,7 @@ module TTCrypt
       message.force_encoding Encoding::BINARY
       _sign message, hash_name.to_s.downcase
     end
-
+    
     # Check message signature signed with pkcs#1 v2.2 RSASSA-PSS
     # process
     #
@@ -182,6 +198,6 @@ end
 require 'ttcrypt/ttcrypt'
 
 module TTCrypt
-  module_function :factorize, :_factorize, :_factorize2, :generate_prime, :_generate_prime
+  module_function :factorize, :_factorize, :_factorize2, :generate_prime, :_generate_prime, :sha256, :sha512
 end
 

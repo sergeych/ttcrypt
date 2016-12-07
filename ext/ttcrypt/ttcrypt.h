@@ -32,7 +32,8 @@ namespace ttcrypt {
 
     byte_buffer sha1(const byte_buffer& data) noexcept;
     byte_buffer sha256(const byte_buffer& data) noexcept;
-    
+    byte_buffer sha512(const byte_buffer& data) noexcept;
+
     byte_buffer i2osp(const big_integer& i, size_t block_size=0) noexcept;
     
     inline big_integer os2ip(const byte_buffer& buffer) noexcept {

@@ -21,7 +21,11 @@
 
 #include "ttcrypt.h"
 #include "sha1.h"
+#include "sph_sha2.h"
+
+extern "C" {
 #include "sha256.h"
+}
 
 using namespace thrift;
 
@@ -37,6 +41,15 @@ byte_buffer ttcrypt::sha256(const thrift::byte_buffer &data) noexcept {
     sha256_starts(&ctx);
     sha256_update(&ctx, data.data().get(), (uint32) data.size());
     sha256_finish(&ctx, res.data().get());
+    return res;
+}
+
+byte_buffer ttcrypt::sha512(const thrift::byte_buffer &data) noexcept {
+    byte_buffer res(64);
+    sph_sha512_context cxt;
+    sph_sha512_init(&cxt);
+    sph_sha512(&cxt, data.data().get(), (size_t) data.size());
+    sph_sha512_close(&cxt, res.data().get());
     return res;
 }
 
