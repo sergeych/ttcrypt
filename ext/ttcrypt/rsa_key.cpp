@@ -162,6 +162,9 @@ bool emsa_pss_verify(const byte_buffer& source_message,
 	if (sLen == 0)
 		sLen = emLen - hLen - 2;
 
+    if( sLen > 5000000 )
+        throw rsa_key::error("invalid salt length");
+
 	if (emLen < hLen + sLen + 2 || encoded_message[-1] != 0xbc)
 		return false;
 

@@ -14,7 +14,7 @@ thinks.
 
 ## Changes
 
-After years in production we are added SHA512 signing hash and ability to caclulate hashes for strings - it's faster than using Digest module - at least on reasonable sized sources we use.
+After years in production we are added SHA512 signing hash and ability to caclulate hashes for strings - it's faster than using Digest module - at least on reasonable sized sources we use. Also it is possible to specify custom salt size on signature verification (almost never used though).
 
 ## Installation
 

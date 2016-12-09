@@ -150,10 +150,10 @@ module TTCrypt
     #@param [String] signature
     #@param [Symbol|String] hash function used (:sha1 or :sha256)
     #@return [bool] true if the signature is consistent
-    def verify message, signature, hash_name=:sha1
+    def verify message, signature, hash_name=:sha1, salt_length=0
       message.force_encoding Encoding::BINARY
       signature.force_encoding Encoding::BINARY
-      _verify message, signature, hash_name.to_s.downcase
+      _verify message, signature, hash_name.to_s.downcase, salt_length
     end
 
     # Extract public key from a private (or public) key
@@ -198,6 +198,7 @@ end
 require 'ttcrypt/ttcrypt'
 
 module TTCrypt
-  module_function :factorize, :_factorize, :_factorize2, :generate_prime, :_generate_prime, :sha256, :sha512
+  module_function :factorize, :_factorize, :_factorize2, :generate_prime, :_generate_prime,
+                  :sha256, :sha512#, :self_test
 end
 

@@ -136,8 +136,50 @@ describe 'rsa-oaep' do
     TTCrypt.sha256(source).should == Digest::SHA256.new.digest(source)
     TTCrypt.sha512(source).should == Digest::SHA512.new.digest(source)
   end
+  
+  # it 'self-tests' do
+  #   TTCrypt.self_test
+  # end
 
-  it 'should properly sign'
+  it 'properly signs' do
+  
+    message = h2s '
+      85 9e ef 2f d7 8a ca 00 30 8b dc 47 11 93 bf 55
+      bf 9d 78 db 8f 8a 67 2b 48 46 34 f3 c9 c2 6e 64
+      78 ae 10 26 0f e0 dd 8c 08 2e 53 a5 29 3a f2 17
+      3c d5 0c 6d 5d 35 4f eb f7 8b 26 02 1c 25 c0 27
+      12 e7 8c d4 69 4c 9f 46 97 77 e4 51 e7 f8 e9 e0
+      4c d3 73 9c 6b bf ed ae 48 7f b5 56 44 e9 ca 74
+      ff 77 a5 3c b7 29 80 2f 6e d4 a5 ff a8 ba 15 98
+      90 fc'
+    
+    e = h2s '01 00 01'
+    
+    p = h2s '
+      d1 7f 65 5b f2 7c 8b 16 d3 54 62 c9 05 cc 04 a2
+      6f 37 e2 a6 7f a9 c0 ce 0d ce d4 72 39 4a 0d f7
+      43 fe 7f 92 9e 37 8e fd b3 68 ed df f4 53 cf 00
+      7a f6 d9 48 e0 ad e7 57 37 1f 8a 71 1e 27 8f 6b'
+  
+    q = h2s '
+      c6 d9 2b 6f ee 74 14 d1 35 8c e1 54 6f b6 29 87
+      53 0b 90 bd 15 e0 f1 49 63 a5 e2 63 5a db 69 34
+      7e c0 c0 1b 2a b1 76 3f d8 ac 1a 59 2f b2 27 57
+      46 3a 98 24 25 bb 97 a3 a4 37 c5 bf 86 d0 3f 2f'
+  
+    signature = h2s '
+      8d aa 62 7d 3d e7 59 5d 63 05 6c 7e c6 59 e5 44
+      06 f1 06 10 12 8b aa e8 21 c8 b2 a0 f3 93 6d 54
+      dc 3b dc e4 66 89 f6 b7 95 1b b1 8e 84 05 42 76
+      97 18 d5 71 5d 21 0d 85 ef bb 59 61 92 03 2c 42
+      be 4c 29 97 2c 85 62 75 eb 6d 5a 45 f0 5f 51 87
+      6f c6 74 3d ed dd 28 ca ec 9b b3 0e a9 9e 02 c3
+      48 82 69 60 4f e4 97 f7 4c cd 7c 7f ca 16 71 89
+      71 23 cb d3 0d ef 5d 54 a2 b5 53 6a d9 0a 74 7e'
+
+    key = TTCrypt::RsaKey.new e: e, p: p, q: q
+    key.verify(message, signature, :sha1, 20).should == true
+  end
 
   def init_test_vectors1
     @n = h2s <<-End

@@ -200,7 +200,7 @@ static VALUE rsa_sign(VALUE self, VALUE message, VALUE signature_method) {
 }
 
 static VALUE rsa_verify(VALUE self, VALUE message, VALUE signature,
-		VALUE signature_method) {
+		VALUE signature_method,VALUE salt_length) {
 	return wrap_exceptions([=] {
 		byte_buffer m = value_to_byte_buffer(message);
 		byte_buffer s = value_to_byte_buffer(signature);
@@ -208,7 +208,10 @@ static VALUE rsa_verify(VALUE self, VALUE message, VALUE signature,
 		hash_t hash = hash_provider(signature_method);
 
 		ruby_unblock([&] {
-					res = rsa(self).verify(m, s, hash);
+		            size_t sLen = 0;
+		            if( salt_length != Qnil )
+		                sLen = NUM2UINT(salt_length);
+					res = rsa(self).verify(m, s, hash, sLen);
 				});
 
 		return res ? Qtrue : Qfalse;
@@ -280,7 +283,7 @@ void Init_ttcrypt(void) {
 	rb_define_method(rsa_class, "_encrypt", (ruby_method) rsa_encrypt, 1);
 	rb_define_method(rsa_class, "_decrypt", (ruby_method) rsa_decrypt, 1);
 	rb_define_method(rsa_class, "_sign", (ruby_method) rsa_sign, 2);
-	rb_define_method(rsa_class, "_verify", (ruby_method) rsa_verify, 3);
+	rb_define_method(rsa_class, "_verify", (ruby_method) rsa_verify, 4);
 	rb_define_method(rsa_class, "extract_public",
 			(ruby_method) rsa_extract_public, 0);
 	rb_define_method(rsa_class, "_is_private", (ruby_method) rsa_is_private, 0);
